@@ -1,5 +1,8 @@
-var path = require('path');
+var path = require('path'),
+    fs = require('fs');
 var internals = {};
+
+var jobs = fs.readFileSync(__dirname + '/static/jobs.md', 'utf-8');
 
 exports.register = function Company (facet, options, next) {
   facet.views({
@@ -19,6 +22,12 @@ exports.register = function Company (facet, options, next) {
     path: "/about",
     method: "GET",
     handler: require('./show-about')(options)
+  });
+
+  facet.route({
+    path: "/jobs",
+    method: "GET",
+    handler: require('./show-static')('jobs', jobs)
   });
 
   facet.route({
